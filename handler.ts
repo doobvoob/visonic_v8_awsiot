@@ -24,8 +24,10 @@ interface change_state {
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export async function change_state (event: change_state) {
-  const client = await authenticatedAxios()
+  console.log(event, event.set_state)
   if (event.set_state === undefined) return
+  const client = await authenticatedAxios()
+  console.log(`authenticated session with ${process.env.hostname}`)
   enum states {
     arm_home = 'HOME',
     disarm = 'DISARM',
@@ -50,10 +52,10 @@ export async function change_state (event: change_state) {
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export async function cron () {
   const client = await authenticatedAxios()
+  console.log(`authenticated session with ${process.env.hostname}`)
   const status = await alarm.getStatus(client)
-  const troubles = await alarm.getTroubles(client)
-  const alerts = await alarm.getAlerts(client)
-  const alarms = await alarm.getAlarms(client)
+  console.log('fetched status', status)
+
   const mapped = {
     ...status,
     is_connected: status.connected,
@@ -70,6 +72,9 @@ export async function cron () {
       thingName: 'alarm_status'
     })
     .promise()
+
+  const troubles = await alarm.getTroubles(client)
+  console.log('fetched troubles', troubles)
   await iotdata
     .updateThingShadow({
       payload: JSON.stringify({ state: { reported: { troubles: troubles } } }),
@@ -77,6 +82,9 @@ export async function cron () {
       thingName: 'alarm_status'
     })
     .promise()
+
+  const alerts = await alarm.getAlerts(client)
+  console.log('fetched alerts', alerts)
   await iotdata
     .updateThingShadow({
       payload: JSON.stringify({ state: { reported: { alerts: alerts } } }),
@@ -84,6 +92,9 @@ export async function cron () {
       thingName: 'alarm_status'
     })
     .promise()
+
+  const alarms = await alarm.getAlarms(client)
+  console.log('fetched alarms', alarms)
   await iotdata
     .updateThingShadow({
       payload: JSON.stringify({ state: { reported: { alarms: alarms } } }),
