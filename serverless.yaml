@@ -38,7 +38,7 @@ functions:
     reservedConcurrency: 5
     events:
       - iot:
-          sql: "SELECT state.desired.state as set_state FROM '$aws/things/alarm_status/shadow/update/accepted'"
+          sql: "SELECT state.desired.state as set_state FROM '$aws/things/alarm_status/shadow/update/accepted' WHERE state.desired.state <> Null"
   cron:
     handler: handler.cron
     timeout: 60
