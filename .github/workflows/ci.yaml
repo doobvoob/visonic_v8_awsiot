@@ -42,3 +42,10 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_iot_endpoint: ${{ secrets.aws_iot_endpoint }}
+          hostname: ${{ secrets.hostname }}
+          app_id: ${{ secrets.app_id }}
+          user_code: ${{ secrets.user_code }}
+          panel_id: ${{ secrets.panel_id }}
+          email: ${{ secrets.email }}
+          password: ${{ secrets.password }}
