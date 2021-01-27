@@ -51,16 +51,41 @@ export async function change_state (event: change_state) {
 export async function cron () {
   const client = await authenticatedAxios()
   const status = await alarm.getStatus(client)
+  const troubles = await alarm.getTroubles(client)
+  const alerts = await alarm.getAlerts(client)
+  const alarms = await alarm.getAlarms(client)
   const mapped = {
     ...status,
     is_connected: status.connected,
     ready_status: status.partitions[0].ready, // true/false
     state: status.partitions[0].state // Disarm/ExitDelayHome/Home/ExitDelayAway/Away/unknown
   }
-  return iotdata
+  await iotdata
     .updateThingShadow({
       payload: JSON.stringify({ state: { reported: mapped } }),
       thingName: 'alarm_status'
     })
     .promise()
+  await iotdata
+    .updateThingShadow({
+      payload: JSON.stringify({ state: { reported: { troubles: troubles } } }),
+      shadowName: 'troubles',
+      thingName: 'alarm_status'
+    })
+    .promise()
+  await iotdata
+    .updateThingShadow({
+      payload: JSON.stringify({ state: { reported: { alerts: alerts } } }),
+      shadowName: 'alerts',
+      thingName: 'alarm_status'
+    })
+    .promise()
+  await iotdata
+    .updateThingShadow({
+      payload: JSON.stringify({ state: { reported: { alarms: alarms } } }),
+      shadowName: 'alarms',
+      thingName: 'alarm_status'
+    })
+    .promise()
+  return 'OK'
 }
