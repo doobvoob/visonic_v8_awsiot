@@ -5,6 +5,7 @@ const iotdata = new IotData({
   endpoint: process.env.aws_iot_endpoint
 })
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export async function authenticatedAxios () {
   return alarm.getAuthenticatedAxios({
     hostname: process.env.hostname,
@@ -17,7 +18,12 @@ export async function authenticatedAxios () {
   })
 }
 
-export async function change_state (event) {
+interface change_state {
+  set_state: string
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export async function change_state (event: change_state) {
   const client = await authenticatedAxios()
   if (event.set_state === undefined) return
   enum states {
@@ -41,6 +47,7 @@ export async function change_state (event) {
   )
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export async function cron () {
   const client = await authenticatedAxios()
   const status = await alarm.getStatus(client)
