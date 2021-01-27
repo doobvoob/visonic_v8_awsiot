@@ -4,3 +4,5 @@ coverage
 index.js
 src/alarm.js
 **/*.d.ts
+.build
+.serverless

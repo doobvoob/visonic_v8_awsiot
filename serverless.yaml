@@ -1,0 +1,60 @@
+service: visonic-v8-aws-iot
+frameworkVersion: '2'
+
+useDotenv: true
+configValidationMode: error
+plugins:
+  - serverless-plugin-typescript
+  
+provider:
+  name: aws
+  runtime: nodejs12.x
+  versionFunctions: false
+  region: eu-west-2
+  stage: production
+  logRetentionInDays: 3
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "iot:UpdateThingShadow"
+        - "iot:DeleteThingShadow"
+      Resource: "*"
+
+  environment:
+    hostname: ${env:hostname}
+    app_id: ${env:app_id}
+    user_code: ${env:user_code}
+    panel_id: ${env:panel_id}
+    email: ${env:email}
+    password: ${env:password}
+    aws_iot_endpoint: ${env:aws_iot_endpoint}
+
+functions:
+  change:
+    handler: handler.change_state
+    timeout: 30
+    memorySize: 128
+    reservedConcurrency: 5
+    events:
+      - iot:
+          sql: "SELECT state.desired.state as set_state FROM '$aws/things/alarm_status/shadow/update/accepted'"
+  cron:
+    handler: handler.cron
+    timeout: 60
+    memorySize: 128
+    reservedConcurrency: 5
+    events:
+      - schedule: rate(1 minute)
+
+package:
+  exclude:
+    - test/**
+    - .*
+    - .*/**
+    - coverage/**
+    - Dockerfile
+    - '*.md'
+    - '*.pem'
+    - LICENSE
+    - package*
+    - wallaby.js
