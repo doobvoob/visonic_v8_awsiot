@@ -32,9 +32,9 @@ jobs:
 
       - run: npm run test
 
-      - uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.github_token }}
+      # - uses: coverallsapp/github-action@master
+      #   with:
+      #     github-token: ${{ secrets.github_token }}
 
       - name: Deploy
         if: github.ref == 'refs/heads/master'
