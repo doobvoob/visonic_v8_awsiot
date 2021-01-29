@@ -60,6 +60,10 @@ export async function cron () {
     ready_status: status.partitions[0].ready, // true/false
     state: status.partitions[0].state // Disarm/ExitDelayHome/Home/ExitDelayAway/Away/unknown
   }
+  if (mapped.state === 'HOME') mapped.state = 'Home'
+  if (mapped.state === 'AWAY') mapped.state = 'Away'
+  if (mapped.state === 'DISARM') mapped.state = 'Disarm'
+
   await iotdata
     .updateThingShadow({
       payload: JSON.stringify({ state: { reported: mapped } }),
