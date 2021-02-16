@@ -5,6 +5,7 @@ useDotenv: true
 configValidationMode: error
 plugins:
   - serverless-plugin-typescript
+  - serverless-plugin-aws-alerts
   
 provider:
   name: aws
@@ -58,3 +59,17 @@ package:
     - LICENSE
     - package*
     - wallaby.js
+
+custom:
+  alerts:
+    stages:
+      - production
+    topics:
+      alarm:
+        topic: visonic-alerts-alarm
+        notifications:
+          - protocol: email
+            endpoint: ${env:email}
+    alarms:
+      - functionErrors
+      - functionThrottles
