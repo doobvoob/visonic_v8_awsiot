@@ -21,7 +21,7 @@
   "devDependencies": {
     "@types/jest": "^26.0.24",
     "@typescript-eslint/eslint-plugin": "^4.28.5",
-    "@typescript-eslint/parser": "^4.28.5",
+    "@typescript-eslint/parser": "^4.29.0",
     "axios-debug-log": "^0.8.4",
     "axios-mock-adapter": "^1.19.0",
     "dotenv": "^10.0.0",
