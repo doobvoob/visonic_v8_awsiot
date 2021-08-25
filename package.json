@@ -20,7 +20,7 @@
   "homepage": "https://github.com/chrisns/visonic_v8_awsiot#readme",
   "devDependencies": {
     "@types/jest": "^27.0.1",
-    "@typescript-eslint/eslint-plugin": "^4.29.2",
+    "@typescript-eslint/eslint-plugin": "^4.29.3",
     "@typescript-eslint/parser": "^4.29.2",
     "axios-debug-log": "^0.8.4",
     "axios-mock-adapter": "^1.20.0",
