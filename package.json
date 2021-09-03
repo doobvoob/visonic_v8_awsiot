@@ -38,6 +38,6 @@
     "typescript": "^4.4.2"
   },
   "dependencies": {
-    "@chrisns/visonic_v8": "^1.0.300"
+    "@chrisns/visonic_v8": "^1.0.301"
   }
 }
