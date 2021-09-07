@@ -128,7 +128,7 @@ export async function cron () {
   console.log('fetched and mapped devices', mappedDevices)
   await iotdata
     .updateThingShadow({
-      payload: JSON.stringify({ state: { reported: { mappedDevices } } }),
+      payload: JSON.stringify({ state: { reported: mappedDevices } }),
       shadowName: 'devices',
       thingName: 'alarm_status'
     })

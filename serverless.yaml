@@ -5,8 +5,6 @@ useDotenv: true
 configValidationMode: error
 plugins:
   - serverless-bundle
-
-  # - serverless-plugin-typescript
   - serverless-plugin-aws-alerts
   
 provider:
@@ -22,8 +20,9 @@ provider:
         - Effect: "Allow"
           Action:
             - "iot:UpdateThingShadow"
-            # - "iot:DeleteThingShadow"
-          Resource: "*"
+          Resource: 
+            - "arn:aws:iot:eu-west-2:557195821817:thing/alarm_status"
+            - "arn:aws:iot:eu-west-2:557195821817:thing/alarm_status/*"
 
   environment:
     hostname: ${env:hostname}
