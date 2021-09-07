@@ -4,22 +4,26 @@ frameworkVersion: '2'
 useDotenv: true
 configValidationMode: error
 plugins:
-  - serverless-plugin-typescript
+  - serverless-bundle
+
+  # - serverless-plugin-typescript
   - serverless-plugin-aws-alerts
   
 provider:
   name: aws
-  runtime: nodejs12.x
+  runtime: nodejs14.x
   versionFunctions: false
   region: eu-west-2
   stage: production
   logRetentionInDays: 3
-  iamRoleStatements:
-    - Effect: "Allow"
-      Action:
-        - "iot:UpdateThingShadow"
-        - "iot:DeleteThingShadow"
-      Resource: "*"
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action:
+            - "iot:UpdateThingShadow"
+            # - "iot:DeleteThingShadow"
+          Resource: "*"
 
   environment:
     hostname: ${env:hostname}
@@ -61,6 +65,10 @@ package:
     - wallaby.js
 
 custom:
+  bundle:
+    linting: false
+    sourcemaps: false
+
   alerts:
     stages:
       - production

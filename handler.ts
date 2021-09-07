@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { IotData } from 'aws-sdk'
 import * as alarm from '@chrisns/visonic_v8'
 
@@ -77,7 +78,7 @@ export async function cron () {
   console.log('fetched troubles', troubles)
   await iotdata
     .updateThingShadow({
-      payload: JSON.stringify({ state: { reported: { troubles: troubles } } }),
+      payload: JSON.stringify({ state: { reported: { troubles } } }),
       shadowName: 'troubles',
       thingName: 'alarm_status'
     })
@@ -87,7 +88,7 @@ export async function cron () {
   console.log('fetched alerts', alerts)
   await iotdata
     .updateThingShadow({
-      payload: JSON.stringify({ state: { reported: { alerts: alerts } } }),
+      payload: JSON.stringify({ state: { reported: { alerts } } }),
       shadowName: 'alerts',
       thingName: 'alarm_status'
     })
@@ -97,10 +98,41 @@ export async function cron () {
   console.log('fetched alarms', alarms)
   await iotdata
     .updateThingShadow({
-      payload: JSON.stringify({ state: { reported: { alarms: alarms } } }),
+      payload: JSON.stringify({ state: { reported: { alarms } } }),
       shadowName: 'alarms',
       thingName: 'alarm_status'
     })
     .promise()
+
+  const devices = await alarm.getAllDevices(client)
+  const mappedDevices = {}
+  devices
+    .filter(device => device.device_type === 'ZONE')
+    .forEach(
+      device =>
+        (mappedDevices[`zone_${device.device_number}`] = {
+          zone_type: device.zone_type,
+          subtype: device.subtype,
+          location: device.traits.location.name,
+          rssi: device.traits.rssi,
+          bypass: device.traits.bypass.enabled,
+          open:
+            device.warnings &&
+            device.warnings.filter(warning => warning.type === 'OPENED')
+              .length >= 1
+              ? true
+              : false
+        })
+    )
+
+  console.log('fetched and mapped devices', mappedDevices)
+  await iotdata
+    .updateThingShadow({
+      payload: JSON.stringify({ state: { reported: { mappedDevices } } }),
+      shadowName: 'devices',
+      thingName: 'alarm_status'
+    })
+    .promise()
+
   return 'OK'
 }

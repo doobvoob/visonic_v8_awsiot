@@ -6,3 +6,4 @@ src/alarm.js
 **/*.d.ts
 .build
 .serverless
+.webpack
