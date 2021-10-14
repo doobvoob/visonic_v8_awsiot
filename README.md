@@ -6,4 +6,4 @@
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/chrisns/visonic_v8_awsiot.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/chrisns/visonic_v8_awsiot/alerts/)
 [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/chrisns/visonic_v8_awsiot.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/chrisns/visonic_v8_awsiot/context:javascript)
 
-Serverless lambda to hook up aws iot thing shadow to visonic alarm
+Serverless lambda to hook up aws iot thing shadow to visonic alarm.
