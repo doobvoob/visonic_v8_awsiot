@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { IotData } from 'aws-sdk'
 import * as alarm from '@chrisns/visonic_v8'
 
